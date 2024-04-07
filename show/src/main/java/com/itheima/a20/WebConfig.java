@@ -47,8 +47,9 @@ public class WebConfig {
 
     // ⬅️注册bean，用来向tomcat注册 DispatcherServlet, Spring MVC 的入口
     @Bean
-    public DispatcherServletRegistrationBean dispatcherServletRegistrationBean(DispatcherServlet dispatcherServlet, WebMvcProperties webMvcProperties) {
-        // 注册哪个bean，Servlet负责的请求路径
+    public DispatcherServletRegistrationBean dispatcherServletRegistrationBean(DispatcherServlet dispatcherServlet,
+                                                                               WebMvcProperties webMvcProperties) {
+        // 注册哪个bean，该Servlet负责的请求路径
         DispatcherServletRegistrationBean registrationBean = new DispatcherServletRegistrationBean(dispatcherServlet, "/");
         // 表示tomcat启动时就初始化 DispatcherServlet
         // 数字代表 众多servlet 初始化的优先级，小的数字优先级高
@@ -68,34 +69,34 @@ public class WebConfig {
         return new RequestMappingHandlerMapping();
     }
 
-    // ⬅️2. 继续加入RequestMappingHandlerAdapter, 会替换掉 DispatcherServlet 默认的 4 个 HandlerAdapter
-//    @Bean
-//    public MyRequestMappingHandlerAdapter requestMappingHandlerAdapter() {
-//        return  new MyRequestMappingHandlerAdapter();
-//    }
-
-
-
-
-
+//     ⬅️2. 继续加入RequestMappingHandlerAdapter, 会替换掉 DispatcherServlet 默认的 4 个 HandlerAdapter
     @Bean
     public MyRequestMappingHandlerAdapter requestMappingHandlerAdapter() {
-        MyRequestMappingHandlerAdapter handlerAdapter = new MyRequestMappingHandlerAdapter();
-
-
-        ArrayList<HandlerMethodArgumentResolver> argumentResolvers  = new ArrayList<>();
-        TokenArgumentResolver tokenArgumentResolver = new TokenArgumentResolver();
-        argumentResolvers.add(tokenArgumentResolver);
-
-
-        ArrayList<HandlerMethodReturnValueHandler> handlerMethodReturnValueHandlers  = new ArrayList<>();
-        YmlReturnValueHandler ymlReturnValueHandler = new YmlReturnValueHandler();
-        handlerMethodReturnValueHandlers.add(ymlReturnValueHandler);
-
-        handlerAdapter.setCustomArgumentResolvers(argumentResolvers);
-        handlerAdapter.setCustomReturnValueHandlers(handlerMethodReturnValueHandlers);
-        return handlerAdapter;
+        return  new MyRequestMappingHandlerAdapter();
     }
+
+
+
+
+
+//    @Bean
+//    public MyRequestMappingHandlerAdapter requestMappingHandlerAdapter() {
+//        MyRequestMappingHandlerAdapter handlerAdapter = new MyRequestMappingHandlerAdapter();
+//
+//
+//        ArrayList<HandlerMethodArgumentResolver> argumentResolvers  = new ArrayList<>();
+//        TokenArgumentResolver tokenArgumentResolver = new TokenArgumentResolver();
+//        argumentResolvers.add(tokenArgumentResolver);
+//
+//
+//        ArrayList<HandlerMethodReturnValueHandler> handlerMethodReturnValueHandlers  = new ArrayList<>();
+//        YmlReturnValueHandler ymlReturnValueHandler = new YmlReturnValueHandler();
+//        handlerMethodReturnValueHandlers.add(ymlReturnValueHandler);
+//
+//        handlerAdapter.setCustomArgumentResolvers(argumentResolvers);
+//        handlerAdapter.setCustomReturnValueHandlers(handlerMethodReturnValueHandlers);
+//        return handlerAdapter;
+//    }
 //
 //    public HttpMessageConverters httpMessageConverters() {
 //        return new HttpMessageConverters();

@@ -21,7 +21,7 @@ public class A20 {
     private static final Logger log = LoggerFactory.getLogger(A20.class);
 
     public static void main(String[] args) throws Exception {
-        // 内嵌tomcat
+        // 支持内嵌tomcat的 ApplicationContext 实现
         AnnotationConfigServletWebServerApplicationContext context =
                 new AnnotationConfigServletWebServerApplicationContext(WebConfig.class);
 
@@ -30,6 +30,7 @@ public class A20 {
         RequestMappingHandlerMapping handlerMapping = context.getBean(RequestMappingHandlerMapping.class);
 //
         // 获取映射结果,k是与路径，请求方式等相关的信息
+        // HandlerMethod： 控制器方法相关
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
         System.out.println("遍历handlerMapping的内容 ---------------------->");
         handlerMethods.forEach((k, v) -> {
@@ -40,16 +41,16 @@ public class A20 {
 //
 //
 //        // 模拟请求，请求来了，获取控制器方法  返回处理器执行链对象
-//        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test1");
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test1");
 //     //   MockHttpServletRequest request = new MockHttpServletRequest("POST", "/test2");
 //        MockHttpServletRequest request = new MockHttpServletRequest("PUT", "/test3");
-        MockHttpServletRequest request = new MockHttpServletRequest("PUT", "/test4");
+//        MockHttpServletRequest request = new MockHttpServletRequest("PUT", "/test4");
 //        request.setParameter("name", "张三");
         request.addHeader("token", "某个令牌");
         MockHttpServletResponse response = new MockHttpServletResponse();
 //
 //
-        // Handler的执行链，包括拦截器
+        // 请求来了，从handlerMapping中获取HandlerMethod， 实际是Handler的执行链，包括拦截器
         HandlerExecutionChain chain = handlerMapping.getHandler(request);
         System.out.println("HandlerExecutionChain --->: " + chain);
 //
